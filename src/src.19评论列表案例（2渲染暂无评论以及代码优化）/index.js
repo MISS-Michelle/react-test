@@ -17,15 +17,10 @@ class App extends React.Component {
   // 初始化状态
   state = {
     comments: [
-      { id: 1, name: 'jack', content: '沙发！！！' },
-      { id: 2, name: 'rose', content: '板凳~' },
-      { id: 3, name: 'tom', content: '楼主好人' }
-    ],
-
-    // 评论人
-    userName: '',
-    // 评论内容：
-    userContent: ''
+      // { id: 1, name: 'jack', content: '沙发！！！' },
+      // { id: 2, name: 'rose', content: '板凳~' },
+      // { id: 3, name: 'tom', content: '楼主好人' }
+    ]
   }
 
   // 渲染评论列表：
@@ -46,68 +41,52 @@ class App extends React.Component {
         ))}
       </ul>
     )
-  }
 
-  // 处理表单元素值
-  handleForm = e => {
-    const { name, value } = e.target
-
-    this.setState({
-      [name]: value
-    })
-  }
-
-  // 发表评论：
-  addComment = () => {
-    const { comments, userName, userContent } = this.state
-    // console.log(userName, userContent)
-
-    // 将评论信息添加到state中
-    const newComments = [
-      {
-        id: Math.random(),
-        name: userName,
-        content: userContent
-      },
-      ...comments
-    ]
-
-    // console.log(newComments)
-    this.setState({
-      comments: newComments
-    })
+    // return this.state.comments.length === 0 ? (
+    //   <div className="no-comment">暂无评论，快去评论吧~</div>
+    // ) : (
+    //   <ul>
+    //     {this.state.comments.map(item => (
+    //       <li key={item.id}>
+    //         <h3>评论人：{item.name}</h3>
+    //         <p>评论内容：{item.content}</p>
+    //       </li>
+    //     ))}
+    //   </ul>
+    // )
   }
 
   render() {
-    const { userName, userContent } = this.state
-
     return (
       <div className="app">
         <div>
-          <input
-            className="user"
-            type="text"
-            placeholder="请输入评论人"
-            value={userName}
-            name="userName"
-            onChange={this.handleForm}
-          />
+          <input className="user" type="text" placeholder="请输入评论人" />
           <br />
           <textarea
             className="content"
             cols="30"
             rows="10"
             placeholder="请输入评论内容"
-            value={userContent}
-            name="userContent"
-            onChange={this.handleForm}
           />
           <br />
-          <button onClick={this.addComment}>发表评论</button>
+          <button>发表评论</button>
         </div>
 
         {/* 通过条件渲染决定渲染什么内容： */}
         {this.renderList()}
+
+        {/* {this.state.comments.length === 0 ? (
+          <div className="no-comment">暂无评论，快去评论吧~</div>
+        ) : (
+          <ul>
+            {this.state.comments.map(item => (
+              <li key={item.id}>
+                <h3>评论人：{item.name}</h3>
+                <p>评论内容：{item.content}</p>
+              </li>
+            ))}
+          </ul>
+        )} */}
       </div>
     )
   }
