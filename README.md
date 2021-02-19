@@ -1,5 +1,5 @@
 # 脚手架初始化项目
-npx create-react-app 项目名
+npx create-react-app 你的项目名
 
 # 启动项目
 npm start
