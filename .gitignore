@@ -1,4 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# 下面我们看看常用的规则：
+# /mtk               过滤整个文件夹
+# *.zip              过滤所有.zip文件
+# /mtk/do.c          过滤某个具体文件
 
 # dependencies
 /node_modules
