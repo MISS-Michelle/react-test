@@ -2,116 +2,105 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 /* 
-  评论列表案例
-
-  comments: [
-    { id: 1, name: 'jack', content: '沙发！！！' },
-    { id: 2, name: 'rose', content: '板凳~' },
-    { id: 3, name: 'tom', content: '楼主好人' }
-  ]
+  render props 模式
 */
 
-import './index.css'
+// 导入图片资源
+import img from './images/cat.png'
 
-class App extends React.Component {
-  // 初始化状态
+// 作用：鼠标位置复用
+class Mouse extends React.Component {
+  // 鼠标位置state
   state = {
-    comments: [
-      { id: 1, name: 'jack', content: '沙发！！！' },
-      { id: 2, name: 'rose', content: '板凳~' },
-      { id: 3, name: 'tom', content: '楼主好人' }
-    ],
-
-    // 评论人
-    userName: '',
-    // 评论内容：
-    userContent: ''
+    x: 0,
+    y: 0
   }
 
-  // 渲染评论列表：
-  renderList() {
-    const { comments } = this.state
-
-    if (comments.length === 0) {
-      return <div className="no-comment">暂无评论，快去评论吧~</div>
-    }
-
-    return (
-      <ul>
-        {comments.map(item => (
-          <li key={item.id}>
-            <h3>评论人：{item.name}</h3>
-            <p>评论内容：{item.content}</p>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-
-  // 处理表单元素值
-  handleForm = e => {
-    const { name, value } = e.target
-
+  // 鼠标移动事件的事件处理程序
+  handleMouseMove = e => {
     this.setState({
-      [name]: value
+      x: e.clientX,
+      y: e.clientY
     })
   }
 
-  // 发表评论：
-  addComment = () => {
-    const { comments, userName, userContent } = this.state
-    // console.log(userName, userContent)
-
-    // 将评论信息添加到state中
-    const newComments = [
-      {
-        id: Math.random(),
-        name: userName,
-        content: userContent
-      },
-      ...comments
-    ]
-
-    // console.log(newComments)
-    this.setState({
-      comments: newComments
-    })
+  // 监听鼠标移动事件
+  componentDidMount() {
+    window.addEventListener('mousemove', this.handleMouseMove)
+    //这里的children其实就是子组件标签里写的函数代码、文字、p标签等等
+    console.log(this.props.children);
   }
 
   render() {
-    const { userName, userContent } = this.state
-
+    //return this.props.children(this.state)
     return (
-      <div className="app">
-        <div>
-          <input
-            className="user"
-            type="text"
-            placeholder="请输入评论人"
-            value={userName}
-            name="userName"
-            onChange={this.handleForm}
-          />
-          <br />
-          <textarea
-            className="content"
-            cols="30"
-            rows="10"
-            placeholder="请输入评论内容"
-            value={userContent}
-            name="userContent"
-            onChange={this.handleForm}
-          />
-          <br />
-          <button onClick={this.addComment}>发表评论</button>
-        </div>
+       <div>
+         {/* {this.props.children(this.state)} */}
+         <p>我是鼠标组件里面的p标签</p>
+       </div>
+    )
+  }
+}
 
-        {/* 通过条件渲染决定渲染什么内容： */}
-        {this.renderList()}
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>render props 模式</h1>
+        {/* <Mouse
+          render={mouse => {
+            return (
+              <p>
+                鼠标位置：{mouse.x} {mouse.y}
+              </p>
+            )
+          }}
+        /> */}
+
+        <Mouse>
+          {/* 这个标签内可以包裹文字和标签 */}
+          {mouse => {
+            return (
+              <p>
+                鼠标位置：{mouse.x} {mouse.y}
+              </p>
+            )
+          }}
+        </Mouse>
+
+        <Mouse>
+          {mouse => (
+            <img
+              src={img}
+              alt="猫"
+              style={{
+                position: 'absolute',
+                top: mouse.y - 64,
+                left: mouse.x - 64
+              }}
+            />
+          )}
+        </Mouse>
+
+        {/* 猫捉老鼠 */}
+        {/* <Mouse
+          render={mouse => {
+            return (
+              <img
+                src={img}
+                alt="猫"
+                style={{
+                  position: 'absolute',
+                  top: mouse.y - 64,
+                  left: mouse.x - 64
+                }}
+              />
+            )
+          }}
+        /> */}
       </div>
     )
   }
 }
 
-// 渲染组件
 ReactDOM.render(<App />, document.getElementById('root'))
